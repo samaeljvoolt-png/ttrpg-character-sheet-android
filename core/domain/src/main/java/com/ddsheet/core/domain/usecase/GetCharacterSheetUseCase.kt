@@ -20,21 +20,25 @@ class GetCharacterSheetUseCase(
     suspend operator fun invoke(
         id: CharacterId
     ): Either<DomainError, Pair<Character, com.ddsheet.core.domain.model.GameCharacterSheet>> {
-        return repository.findById(id).flatMap { character ->
-            val plugin = pluginProvider(character.systemId)
-                ?: return Either.Left(
-                    DomainError.InvalidSystem(character.systemId)
-                )
-
-            val sheetResult = plugin.createEmptySheet()
-            if (sheetResult.isFailure) {
-                return Either.Left(
-                    DomainError.ValidationFailed("Failed to create sheet: ${sheetResult.exceptionOrNull()?.message}")
-                )
-            }
-
-            val derived = plugin.computeDerivedStats(sheetResult.getOrThrow())
-            Either.Right(character to derived)
+        val characterResult = repository.findById(id)
+        if (characterResult is Either.Left) {
+            return characterResult
         }
+        val character = (characterResult as Either.Right).value
+
+        val plugin = pluginProvider(character.systemId)
+            ?: return Either.Left(
+                DomainError.InvalidSystem(character.systemId)
+            )
+
+        val sheetResult = plugin.createEmptySheet()
+        if (sheetResult.isFailure) {
+            return Either.Left(
+                DomainError.ValidationFailed("Failed to create sheet: ${sheetResult.exceptionOrNull()?.message}")
+            )
+        }
+
+        val derived = plugin.computeDerivedStats(sheetResult.getOrThrow())
+        return Either.Right(character to derived)
     }
 }

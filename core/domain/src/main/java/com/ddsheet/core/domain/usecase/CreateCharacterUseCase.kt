@@ -20,9 +20,15 @@ class CreateCharacterUseCase(
         name: String,
         systemId: SystemId
     ): Either<DomainError, Character> {
-        return Character.create(name, systemId).flatMap { character ->
-            repository.save(character)
-                .map { character } // devolvemos la entidad, no solo el ID
+        return when (val createResult = Character.create(name, systemId)) {
+            is Either.Left -> createResult
+            is Either.Right -> {
+                val character = createResult.value
+                when (val saveResult = repository.save(character)) {
+                    is Either.Left -> saveResult
+                    is Either.Right -> Either.Right(character)
+                }
+            }
         }
     }
 }

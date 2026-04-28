@@ -28,13 +28,13 @@ sealed class Either<out L, out R> {
     data class Right<R>(val value: R) : Either<Nothing, R>()
 }
 
-fun <L, R, T> Either<L, R>.map(fn: (R) -> T): Either<L, T> =
+inline fun <L, R, T> Either<L, R>.map(fn: (R) -> T): Either<L, T> =
     when (this) {
         is Either.Left -> this
         is Either.Right -> Either.Right(fn(value))
     }
 
-fun <L, R, T> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
+inline fun <L, R, T> Either<L, R>.flatMap(fn: (R) -> Either<L, T>): Either<L, T> =
     when (this) {
         is Either.Left -> this
         is Either.Right -> fn(value)
