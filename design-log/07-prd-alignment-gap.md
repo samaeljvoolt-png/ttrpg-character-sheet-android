@@ -143,7 +143,7 @@ class DnD5eGameSystem : GameSystem {
 ## Implementation Plan
 
 - [x] **Fase 1**: Crear domain model completo (14+ archivos en `model/`)
-- [ ] **Fase 2**: Crear `GameSystem` interface + `DnD5eGameSystem`
+- [x] **Fase 2**: Crear `GameSystem` interface + `DnD5eGameSystem`
 - [ ] **Fase 3**: Renombrar `Character` actual → `CharacterSummary`; crear `Character` nuevo
 - [ ] **Fase 4**: Evolucionar `CharacterRepository` a Flow + Either
 - [ ] **Fase 5**: Implementar 13 use cases del PRD

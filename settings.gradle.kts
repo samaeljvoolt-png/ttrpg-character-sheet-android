@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "TtrpgCharacterSheet"
 
 include(":core:domain")
+include(":game-systems:dnd5e")

@@ -8,6 +8,12 @@ package com.ddsheet.core.domain.model
  * - Los adaptadores (módulos como :domain:dnd5e) implementan.
  * - La app no depende de D&D 5e; depende de esta abstracción.
  */
+@Deprecated(
+    message = "Migrado a GameSystem (reglas puras) + builders/validators separados. " +
+              "Ver com.ddsheet.core.domain.gamesystem.GameSystem",
+    replaceWith = ReplaceWith("GameSystem"),
+    level = DeprecationLevel.WARNING
+)
 interface GameSystemPlugin {
     val systemId: SystemId
     val displayName: String
